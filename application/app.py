@@ -9,7 +9,7 @@ from flask import Flask, request, session, g, redirect, url_for, abort, \
 # create our little application :)
 app = Flask(__name__)
 
-
+# load config file
 app.config.from_pyfile('map_config.py')
 
 @app.route('/')
@@ -25,14 +25,13 @@ def get_k_nearest_truck():
     #get request parameters
     latitude = str(request.args.get('lat'))
     longitude = str(request.args.get('lon'))
-    #query the DB for all the parkpoints
+    #query the DB for all the truck points
     result = db.query(' SELECT * FROM '+table_name+' ORDER BY geom <-> st_setsrid(st_makepoint(' + latitude+','+longitude+'),4326) LIMIT 1;')
-#    result = db.query('SELECT gid,name,ST_X(the_geom) as lon,ST_Y(the_geom) as lat FROM '+ table_name+";")
 
     #Now turn the results into valid JSON
     return str(json.dumps(list(result.dictresult())))
 
-    #bounding box (within?lat1=45.5&lon1=-82&lat2=46.5&lon2=-81)
+#return trucks in bounding box 
 @app.route("/trucks/within")
 def within():
     table_name = app.config['TABLE_NAME']
@@ -51,6 +50,7 @@ def within():
     #turn the results into valid JSON
     return str(json.dumps(list(result.dictresult())))
 
+# connect to postgre database
 def connect_db():
     """Connects to the specific database."""
     db = pg.connect(app.config['APP_NAME'], \
@@ -93,13 +93,10 @@ def close_db(error):
         g.postgre_db.close()
 
 
-@app.route('/show')
-def show_entries():
-    db = get_db()
-    table_name = app.config['TABLE_NAME']
-    
-    result = db.query(' SELECT * FROM '+table_name+';')
-    return render_template('index.html', entries=result)
+@app.route("/test")
+def test():
+    "small test"
+    return "Hello World!"
 
 if __name__=="__main__":
     app.run()
