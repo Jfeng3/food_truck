@@ -1,5 +1,4 @@
-createdb -U postgres <DATABASENAME>
-psql -U postgres -d <DATABASENAME> -c 'CREATE EXTENSION postgis'
+
 
 CREATE EXTENSION postgis;
 CREATE EXTENSION postgis_topology;
@@ -33,13 +32,10 @@ PriorPermit int,
 ExpirationDate TIMESTAMP,
 Location varchar
 );
-COPY truck_location FROM '/Users/jiefeng/Dropbox/Fun_Projects/uber/food_truck/app/Mobile_Food_Facility_Permit.csv' DELIMITER ',' CSV;
+COPY truck_location FROM '/Users/jiefeng/Dropbox/Fun_Projects/uber/food_truck/application/Facility_Permit.csv' DELIMITER ',' CSV HEADER;
 
-SELECT AddGeometryColumn('public', 'truck_location', 'geom', 900913, 'POINT', 2);
-update truck_location set geom = ST_SetSRID(ST_MakePoint(Longitude, Latitude), 900913);
+SELECT AddGeometryColumn('public', 'truck_location', 'geom', 4326, 'POINT', 2);
+update truck_location set geom = ST_SetSRID(ST_MakePoint(Longitude, Latitude), 4326);
 CREATE INDEX idx_points ON truck_location USING GIST (geom);
 
-SELECT *
-FROM truck_location
-ORDER BY geom <-> st_setsrid(st_makepoint(-90,40),4326)
-LIMIT 10;
+
