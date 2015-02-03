@@ -59,7 +59,7 @@ truck<!doctype html>
       for (var i = 0; i < data.length; i++){
         truck = data[i];
         
-        markerArray[i] = L.marker([truck.latitude, truck.longitude]).bindPopup(truck.applicant);
+        markerArray[i] = L.marker([truck.latitude, truck.longitude]).bindPopup(truck.fooditems);
       }
  
       markerLayerGroup = L.layerGroup(markerArray).addTo(map);
