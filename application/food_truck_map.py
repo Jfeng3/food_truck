@@ -1,11 +1,7 @@
-
 import os
-from sqlite3 import dbapi2 as sqlite3
 import pg
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash, json
-
-
 # create our little application :)
 app = Flask(__name__)
 
@@ -18,7 +14,7 @@ def index():
 
 #return trucks close to given location:
 @app.route("/trucks")
-def get_k_nearest_truck():
+def get_nearest_truck():
     table_name = app.config['TABLE_NAME']
     db = get_db()
     
@@ -33,7 +29,7 @@ def get_k_nearest_truck():
 
 #return trucks in bounding box 
 @app.route("/trucks/within")
-def within():
+def trucks_within():
     table_name = app.config['TABLE_NAME']
     db = get_db()
     #get the request parameters
@@ -53,7 +49,7 @@ def within():
 # connect to postgre database
 def connect_db():
     """Connects to the specific database."""
-    db = pg.connect(app.config['APP_NAME'], \
+    db = pg.connect(app.config['DATABASE_NAME'], \
          app.config['PG_DB_HOST'], \
          app.config['PG_DB_PORT'], \
          None, None, \
@@ -65,9 +61,11 @@ def connect_db():
 def init_db():
     """Initializes the database."""
     db = get_db()
+    #db.query("CREATE EXTENSION postgis;")
     with app.open_resource('schema.sql', mode='r') as f:
-        db.cursor().executescript(f.read())
-    db.commit()
+        query_text = f.read()
+        query_text = query_text.replace("truck_location",app.config['TABLE_NAME'])
+        db.query(query_text)
 
 
 @app.cli.command('initdb')
