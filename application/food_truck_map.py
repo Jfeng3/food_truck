@@ -1,3 +1,10 @@
+"""
+    food_truck_map
+    ~~~~~~~~~~~~
+    The food truck map application.
+    :copyright: (c) 2015 by Jie Feng
+    :license: BSD, see LICENSE for more details.
+"""
 import os
 import pg
 from flask import Flask, request, session, g, redirect, url_for, abort, \

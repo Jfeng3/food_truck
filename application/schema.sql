@@ -24,7 +24,7 @@ PriorPermit int,
 ExpirationDate TIMESTAMP,
 Location varchar
 );
-COPY truck_location FROM '/Users/jiefeng/Dropbox/Fun_Projects/uber/food_truck/application/Mobile_Food_Facility_Permit.csv' DELIMITER ',' CSV HEADER;
+COPY truck_location FROM '/Users/jiefeng/Dropbox/Fun_Projects/uber/food_truck/application/Resource/Mobile_Food_Facility_Permit.csv' DELIMITER ',' CSV HEADER;
 SELECT AddGeometryColumn('public', 'truck_location', 'geom', 4326, 'POINT', 2);
 update truck_location set geom = ST_SetSRID(ST_MakePoint(Longitude, Latitude), 4326);
 
