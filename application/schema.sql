@@ -1,11 +1,3 @@
-
-
-CREATE EXTENSION postgis;
-CREATE EXTENSION postgis_topology;
-CREATE EXTENSION fuzzystrmatch;
-CREATE EXTENSION postgis_tiger_geocoder;
-
-
 DROP TABLE IF EXISTS truck_location;
 CREATE TABLE truck_location(
 locationid int,
@@ -32,10 +24,8 @@ PriorPermit int,
 ExpirationDate TIMESTAMP,
 Location varchar
 );
-COPY truck_location FROM '/Users/jiefeng/Dropbox/Fun_Projects/uber/food_truck/application/Facility_Permit.csv' DELIMITER ',' CSV HEADER;
-
+COPY truck_location FROM '/Users/jiefeng/Dropbox/Fun_Projects/uber/food_truck/application/Mobile_Food_Facility_Permit.csv' DELIMITER ',' CSV HEADER;
 SELECT AddGeometryColumn('public', 'truck_location', 'geom', 4326, 'POINT', 2);
 update truck_location set geom = ST_SetSRID(ST_MakePoint(Longitude, Latitude), 4326);
-CREATE INDEX idx_points ON truck_location USING GIST (geom);
 
 

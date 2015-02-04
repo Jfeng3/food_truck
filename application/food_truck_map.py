@@ -46,18 +46,6 @@ def trucks_within():
     #turn the results into valid JSON
     return str(json.dumps(list(result.dictresult())))
 
-# connect to postgre database
-def connect_db():
-    """Connects to the specific database."""
-    db = pg.connect(app.config['DATABASE_NAME'], \
-         app.config['PG_DB_HOST'], \
-         app.config['PG_DB_PORT'], \
-         None, None, \
-         app.config['PG_DB_USERNAME'], \
-         app.config['PG_DB_PASSWORD'] )
-    return db
-
-
 def init_db():
     """Initializes the database."""
     db = get_db()
@@ -80,7 +68,12 @@ def get_db():
     current application context.
     """
     if not hasattr(g, 'postgre_db'):
-        g.postgre_db = connect_db()
+        g.postgre_db = pg.connect(app.config['DATABASE_NAME'], \
+                 app.config['PG_DB_HOST'], \
+                 app.config['PG_DB_PORT'], \
+                 None, None, \
+                 app.config['PG_DB_USERNAME'], \
+                 app.config['PG_DB_PASSWORD'] )
     return g.postgre_db
 
 

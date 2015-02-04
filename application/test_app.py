@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     map Tests
     ~~~~~~~~~~~~
@@ -29,7 +28,7 @@ def test_get_trucks(client):
     assert truck_info[0]['longitude'] == -122.390016333636
     
 def test_trucks_within(client):
-    """test trucks with a rectangle"""
+    """test trucks within a rectangle"""
     rv = client.get('/trucks/within?lat1=37.78658909826544&lon1=-122.40637421607971&lat2=37.793795881958815&lon2=-122.39244818687439')
     truck_info = json.loads(rv.data)
     assert len(truck_info) == 25
