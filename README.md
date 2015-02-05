@@ -12,6 +12,7 @@ How to run
 Server: Use flask, food_truck_map.py
 I use postgresql database with postgis to extract k nearest neighbor locations
 Response to the follwing request:
+
     1. "/trucks/?lat=a&lon=b": 
     Return the closest food truck infomation near the location (latitude=a, longitude=b)
     
